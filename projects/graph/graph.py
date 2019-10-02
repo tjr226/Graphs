@@ -7,28 +7,58 @@ class Graph:
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
     def __init__(self):
         self.vertices = {}
+
     def add_vertex(self, vertex):
-        """
-        Add a vertex to the graph.
-        """
-        pass  # TODO
+        self.vertices[vertex] = set()
+
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
-        pass  # TODO
+        if v1 not in self.vertices:
+            return None
+        elif v2 not in self.vertices:
+            return None
+        else:
+            self.vertices[v1].add(v2)
+
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        queue = Queue()
+        queue.enqueue(starting_vertex)
+        visited_vertices = [starting_vertex]
+
+        while queue.size() > 0:
+            temp_vertex = queue.dequeue()
+            print(temp_vertex)
+            
+            for i in self.vertices[temp_vertex]:
+                if i not in visited_vertices:
+                    queue.enqueue(i)
+                    visited_vertices.append(i)
+
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        stack = Stack()
+        stack.push(starting_vertex)
+        visited_vertices = [starting_vertex]
+
+        while stack.size() > 0:
+            temp_vertex = stack.pop()
+            print(temp_vertex)
+
+            for i in self.vertices[temp_vertex]:
+                if i not in visited_vertices:
+                    stack.push(i)
+                    visited_vertices.append(i)
+
+
     def dft_recursive(self, starting_vertex):
         """
         Print each vertex in depth-first order
@@ -89,6 +119,7 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
+    print("depth first")
     graph.dft(1)
 
     '''
@@ -106,6 +137,7 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
+    print("breadth first")
     graph.bft(1)
 
     '''
