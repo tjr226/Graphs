@@ -1,4 +1,5 @@
-
+import random
+from util import Queue
 
 class User:
     def __init__(self, name):
@@ -15,12 +16,15 @@ class SocialGraph:
         Creates a bi-directional friendship
         """
         if userID == friendID:
-            print("WARNING: You cannot be friends with yourself")
+            # print("WARNING: You cannot be friends with yourself")
+            return False
         elif friendID in self.friendships[userID] or userID in self.friendships[friendID]:
-            print("WARNING: Friendship already exists")
+            # print("WARNING: Friendship already exists")
+            return False
         else:
             self.friendships[userID].add(friendID)
             self.friendships[friendID].add(userID)
+            return True
 
     def addUser(self, name):
         """
@@ -44,11 +48,23 @@ class SocialGraph:
         self.lastID = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
-
+        
         # Add users
-
-        # Create friendships
+        while self.lastID < numUsers:
+            self.addUser(self.lastID)
+        
+        # if you add up the total of friends each user has,
+        # it must equal numUsers * avgFriendships
+        maxTotalFriendCount = numUsers * avgFriendships
+        currentTotalFriendCount = 0
+        
+        while currentTotalFriendCount < maxTotalFriendCount:
+            friendA = random.randint(1, numUsers)
+            friendB = random.randint(1, numUsers)
+            if self.addFriendship(friendA, friendB) == True:
+                # since we add one friend to two users
+                # we need to increment by 2
+                currentTotalFriendCount += 2
 
     def getAllSocialPaths(self, userID):
         """
@@ -60,7 +76,18 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+        visited[userID] = [userID]
+        queue = Queue()
+        queue.enqueue(userID)
+
+        while queue.size() > 0:
+            temp_ID = queue.dequeue()
+
+            for i in self.friendships[temp_ID]:
+                if i not in visited:
+                    queue.enqueue(i)
+                    visited[i] = [*visited[temp_ID], i]
+
         return visited
 
 
