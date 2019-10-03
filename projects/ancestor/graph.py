@@ -91,8 +91,6 @@ class Graph:
         queue = Queue()
         queue.enqueue(starting_vertex)
         visited_vertices = [starting_vertex]
-        
-
 
         while queue.size() > 0:
             temp_vertex = queue.dequeue()
