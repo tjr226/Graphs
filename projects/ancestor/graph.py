@@ -150,6 +150,8 @@ class Graph:
             if path[0] == starting_vertex and path[-1] == destination_vertex:
                 potential_answers.append(path)
 
+        if potential_answers == []:
+            return [None]
         return min(potential_answers, key=len)
 
 
