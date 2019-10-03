@@ -1,5 +1,6 @@
 import random
 from util import Queue
+import time
 
 class User:
     def __init__(self, name):
