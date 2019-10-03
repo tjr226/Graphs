@@ -34,6 +34,10 @@ class SocialGraph:
         self.users[self.lastID] = User(name)
         self.friendships[self.lastID] = set()
 
+
+    # O(n^2) implementation
+    # generate all friend pairs at the start, then select from them
+
     def populateGraph(self, numUsers, avgFriendships):
         """
         Takes a number of users and an average number of friendships
@@ -52,19 +56,63 @@ class SocialGraph:
         # Add users
         while self.lastID < numUsers:
             self.addUser(self.lastID)
+
         
         # if you add up the total of friends each user has,
         # it must equal numUsers * avgFriendships
         maxTotalFriendCount = numUsers * avgFriendships
         currentTotalFriendCount = 0
         
+        allPossibleFriends = []
+
+        for i in range(1, numUsers):
+            for j in range (i + 1, numUsers + 1):
+                allPossibleFriends.append((i,j))
+            
+        random.shuffle(allPossibleFriends)
+        
+        # print(allPossibleFriends)
+
+
         while currentTotalFriendCount < maxTotalFriendCount:
-            friendA = random.randint(1, numUsers)
-            friendB = random.randint(1, numUsers)
-            if self.addFriendship(friendA, friendB) == True:
-                # since we add one friend to two users
-                # we need to increment by 2
-                currentTotalFriendCount += 2
+            new_friends = allPossibleFriends.pop()
+            self.addFriendship(new_friends[0], new_friends[1])
+            currentTotalFriendCount += 2
+
+
+    # this is the Linear Time implementation (in many cases)
+    # better for less dense graphs, worse for more dense graphs
+    # def populateGraph(self, numUsers, avgFriendships):
+    #     """
+    #     Takes a number of users and an average number of friendships
+    #     as arguments
+
+    #     Creates that number of users and a randomly distributed friendships
+    #     between those users.
+
+    #     The number of users must be greater than the average number of friendships.
+    #     """
+    #     # Reset graph
+    #     self.lastID = 0
+    #     self.users = {}
+    #     self.friendships = {}
+        
+    #     # Add users
+    #     while self.lastID < numUsers:
+    #         self.addUser(self.lastID)
+        
+    #     # if you add up the total of friends each user has,
+    #     # it must equal numUsers * avgFriendships
+    #     maxTotalFriendCount = numUsers * avgFriendships
+    #     currentTotalFriendCount = 0
+        
+    #     while currentTotalFriendCount < maxTotalFriendCount:
+    #         friendA = random.randint(1, numUsers)
+    #         friendB = random.randint(1, numUsers)
+    #         if self.addFriendship(friendA, friendB) == True:
+    #             # since we add one friend to two users
+    #             # we need to increment by 2
+    #             currentTotalFriendCount += 2
 
     def getAllSocialPaths(self, userID):
         """
