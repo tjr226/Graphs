@@ -1,6 +1,17 @@
 from graph import Graph
 from util import Queue, Stack
 
+'''
+NOTES ON TIME COMPLEXITY
+
+Time complexity of DFS is O(b^m), where B is the branching factor times M 
+This can also be expressed as O(n) if you know the number of nodes
+
+Approach #1 is then O(n ^ 2), because you do a DFS from each node
+
+Approach #1 is O(n), since you only do DFS from one node
+
+'''
 # APPROACH #1
 # BRUTE FORCE, WORKS
 # (does DFS from each vertex in Graph, returns longest path to starting_node)
